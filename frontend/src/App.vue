@@ -1,4 +1,13 @@
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Modal from './components/Modal.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    Modal,
+  },
+});
 </script>
 
 <template>
@@ -18,5 +27,7 @@
     <footer>
       <p class="footer-text">© 2025 URL Shortener | All Rights Reserved</p>
     </footer>
+    <Modal />
   </div>
+
 </template>
