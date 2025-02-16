@@ -18,7 +18,7 @@ export class AppService {
     }
   }
 
-  async getLink(shortCode: string) {
+  async getLink(shortCode: string): Promise<Link | HttpException> {
     const originalUrl = await this.linkModel.findOne({ shorten: shortCode });
 
     if (!originalUrl) {
