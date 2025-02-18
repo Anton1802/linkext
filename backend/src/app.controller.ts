@@ -33,7 +33,10 @@ export class AppController {
 
     const resultUrl = `${request.protocol}://${request.get('host')}/${linkUrl.shorten}`;
 
-    return resultUrl;
+    return {
+      original: link.url,
+      shorten: resultUrl,
+    };
   }
 
   @Get('/:shortCode')
