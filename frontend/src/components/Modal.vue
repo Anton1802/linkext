@@ -1,63 +1,50 @@
 <template>
-  <div>
-    <!-- Модалка -->
-    <div v-if="isModalVisible" class="modal">
-      <div class="modal-content">
-        <span @click="closeModal" class="close-btn">&times;</span>
-        <h2>Shortened URL</h2>
-        <div class="url-container">
-          <input type="text" :value="shortLink" readonly ref="shortLinkInput" id="shortLink" />
-          <button @click="copyToClipboard" class="copy-btn">Copy Short Link</button>
-        </div>
+  <div v-if="isModalVisible" class="modal">
+    <div class="modal-content">
+      <span @click="closeModal" class="close-btn">&times;</span>
+      <h2>Shortened URL</h2>
+      <div class="url-container">
+        <input type="text" :value="shortLink" readonly />
+        <button @click="copyToClipboard" class="copy-btn">Copy Short Link</button>
       </div>
     </div>
-
-    <!-- Кнопка для открытия модалки
-    <button @click="openModal">Open Modal</button> -->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'Modal',
-  setup() {
-    // Данные и методы для управления модалкой
-    const shortLink = ref('https://short.link/abc123'); // Это ваш сокращенный URL
-    const isModalVisible = ref(false);
+  props: {
+    shortLink: {
+      type: String,
+      required: true,
+    },
+    isModalVisible: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  emits: ['close'],
+  methods: {
+    async copyToClipboard() {
+    try {
+      await navigator.clipboard.writeText(this.shortLink);
+      alert('Copied to clipboard: ' + this.shortLink);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  },
 
-    // Открытие модалки
-    const openModal = () => {
-      isModalVisible.value = true;
-    };
-
-    // Закрытие модалки
-    const closeModal = () => {
-      isModalVisible.value = false;
-    };
-
-    // Копирование в буфер обмена
-    const copyToClipboard = () => {
-      const input = <HTMLInputElement>document.querySelector('#shortLink');
-      input?.select();
-      document.execCommand('copy');
-      alert('Copied to clipboard: ' + shortLink.value);
-    };
-
-    return {
-      shortLink,
-      isModalVisible,
-      openModal,
-      closeModal,
-      copyToClipboard,
-    };
+    closeModal() {
+      this.$emit('close');
+    },
   },
 });
 </script>
 
 <style scoped>
-/* Стиль для модалки */
 .modal {
   display: flex;
   justify-content: center;
@@ -127,8 +114,6 @@ input {
 .copy-btn:hover {
   background-color: #5a3a82;
 }
-
-/* Адаптивные стили */
 @media (max-width: 768px) {
   .modal-content {
     width: 90%;
