@@ -34,9 +34,19 @@ export default defineComponent({
     const shortLink = ref('');
     const isModalVisible = ref(false);
 
+    const validateUrl = (url: string): boolean => {
+      const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:\d+)?(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=%]*)?$/;
+      return urlPattern.test(url);
+    };
+
     const requestShortLink = async () => {
       if (!urlToShorten.value) {
         alert("Please enter a URL!");
+        return;
+      }
+
+      if (!validateUrl(urlToShorten.value)) {
+        alert("Please enter a valid URL!");
         return;
       }
 
