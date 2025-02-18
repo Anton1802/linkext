@@ -31,7 +31,6 @@ export default defineComponent({
     async copyToClipboard() {
     try {
       await navigator.clipboard.writeText(this.shortLink);
-      alert('Copied to clipboard: ' + this.shortLink);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
