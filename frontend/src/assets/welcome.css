@@ -1,0 +1,20 @@
+.welcome-container {
+    margin-bottom: 1rem;
+}
+
+.welcome {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .welcome {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome {
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,38 @@
+header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 1rem 0;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: left;
+    margin: 0;
+    padding-left: 1rem; 
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    .header-title {
+        font-size: 1.8rem; 
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title {
+        font-size: 1.5rem; 
+    }
+}

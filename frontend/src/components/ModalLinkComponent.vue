@@ -4,7 +4,7 @@
       <span @click="closeModal" class="close-btn">&times;</span>
       <h2>Shortened URL</h2>
       <div class="url-container">
-        <input type="text" :value="shortLink" readonly />
+        <input type="text" :value="localShortLink" readonly />
         <button @click="copyToClipboard" class="copy-btn">Copy Short Link</button>
       </div>
     </div>
@@ -12,10 +12,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
-  name: 'Modal',
+  name: 'ModalLinkComponent',
   props: {
     shortLink: {
       type: String,
@@ -27,19 +28,56 @@ export default defineComponent({
     },
   },
   emits: ['close'],
-  methods: {
-    async copyToClipboard() {
-    try {
-      await navigator.clipboard.writeText(this.shortLink);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
+  setup(props, { emit }) {
+    const localShortLink = ref(props.shortLink);
+
+    watch(() => props.shortLink, (newVal) => {
+      localShortLink.value = newVal;
+    });
+
+    const copyToClipboard = async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(localShortLink.value);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = localShortLink.value;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+        }
+        notify({
+          type: "success",
+          title: "Success",
+          text: "Copied to clipboard!",
+        });
+      } catch (err) {
+        console.error("Failed to copy:", err);
+        notify({
+          type: "error",
+          title: "Error",
+          text: "Failed to copy to clipboard!",
+        });
+      }
+    };
+
+    const closeModal = () => {
+      emit('close');
+    };
+
+    return {
+      localShortLink,
+      copyToClipboard,
+      closeModal,
+    };
   },
 
-    closeModal() {
-      this.$emit('close');
-    },
-  },
+  watch: {
+  isModalVisible(newVal) {
+    console.log("🟢 Modal visibility changed:", newVal);
+  }
+}
 });
 </script>
 
@@ -73,13 +111,15 @@ export default defineComponent({
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
-  color: #aaa;
+  color: #333;
+  transition: color 0.3s, transform 0.2s;
 }
 
 .close-btn:hover {
-  color: #333;
+  color: #000;
+  transform: scale(1.2);
 }
 
 .url-container {
@@ -113,6 +153,7 @@ input {
 .copy-btn:hover {
   background-color: #5a3a82;
 }
+
 @media (max-width: 768px) {
   .modal-content {
     width: 90%;
