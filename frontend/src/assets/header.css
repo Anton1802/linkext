@@ -21,6 +21,24 @@ header {
     padding-left: 1rem; 
 }
 
+nav {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+nav a:hover {
+    color: #764ba2;
+}
+
 @media (max-width: 768px) {
     header {
         padding: 1rem;
