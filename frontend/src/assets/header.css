@@ -25,7 +25,7 @@ nav {
     display: flex;
     flex: 1;
     justify-content: flex-end;
-    padding: 10px;
+    padding-right: 10px;
 }
 
 nav a {
@@ -41,16 +41,24 @@ nav a:hover {
 
 @media (max-width: 768px) {
     header {
-        padding: 1rem;
+        padding-right: 1rem;
     }
 
     .header-title {
         font-size: 1.8rem; 
+    }
+
+    nav a {
+        padding-right: 10px;
     }
 }
 
 @media (max-width: 480px) {
     .header-title {
         font-size: 1.5rem; 
+    }
+
+    nav a {
+        padding-right: 10px;
     }
 }
