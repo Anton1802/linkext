@@ -1,7 +1,7 @@
 // ScrollContainer.vue
 <template>
   <div class="scroll-wrapper">
-    <p>Prev shorten link</p>
+    <p>Previous abbreviations of references</p>
     <slot></slot>
   </div>
 </template>

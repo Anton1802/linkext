@@ -3,8 +3,8 @@ import HomePage from './pages/HomePage.vue'
 import HistoryPage from './pages/HistoryPage.vue'
 
 const routers = [
-    { path: '/', component: HomePage },
-    { path: '/history', component: HistoryPage },
+    { path: '/', component: HomePage, name: "home" },
+    { path: '/history', component: HistoryPage, name: "history" },
 ]
     
 const router = createRouter({

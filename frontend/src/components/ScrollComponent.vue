@@ -42,7 +42,7 @@
   .scroll-item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-    width: 800px;
+    width: 700px;
   }
 
     @media (max-width: 575px) {
