@@ -61,6 +61,15 @@ export default defineComponent({
 
         const data = await response.json();
 
+        let count = 0
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith('shortLink')) {
+            count++
+          }
+        })
+
+        localStorage.setItem(`shortLink${count+1}`, JSON.stringify(data));
+
         emit('shorten', data.shorten);
 
         urlToShorten.value = '';

@@ -1,7 +1,7 @@
 <template>
         <HeaderComponent />
     <ContainerComponent>
-      <WelcomeComponent />
+      <h2 class="title">Shorten your link</h2>
       <InputLinkComponent
         v-model:urlToShorten="urlToShorten"
         @shorten="handleShortenedLink"
@@ -21,7 +21,6 @@ import ModalLinkComponent from '@/components/ModalLinkComponent.vue';
 import ContainerComponent from '@/components/ContainerComponent.vue';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
-import WelcomeComponent from '@/components/WelcomeComponent.vue';
 import InputLinkComponent from '@/components/InputLinkComponent.vue';
 
 export default defineComponent({
@@ -31,7 +30,6 @@ export default defineComponent({
         ContainerComponent,
         HeaderComponent,
         FooterComponent,
-        WelcomeComponent,
         InputLinkComponent
     },
     setup() {

@@ -4,8 +4,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    max-width: 400px;
-    width: 100%;
+    width: 1000px;
     box-sizing: border-box;
 }
 
@@ -13,6 +12,13 @@
     .container {
         padding: 1.5rem;
         max-width: 350px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .container {
+        padding: 1.5rem;
+        max-width: 500px;
     }
 }
 
