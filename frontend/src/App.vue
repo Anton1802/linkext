@@ -1,11 +1,15 @@
 <script setup>
 import HomePage from './components/pages/HomePage.vue';
-
+import 'vfonts/Lato.css'
+import 'vfonts/FiraCode.css'
+import { NNotificationProvider } from 'naive-ui';
 
 </script>
 
 <template>
+  <n-notification-provider>
   <HomePage></HomePage>
+  </n-notification-provider>
 </template>
 
 <style scoped>

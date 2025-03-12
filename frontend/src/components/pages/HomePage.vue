@@ -13,86 +13,91 @@
         <section class="urlbox">
           <h1>Paste the URL to be shortened</h1>
           <n-form :size="'large'">
-      <n-form-item>
-        <n-input style="text-align: start;"  placeholder="Enter the link here"/>
-        <n-button type="error" style="background-color: #e12524;">
-          Shorten URL
-        </n-button>
-      </n-form-item>
-    </n-form>
-    <p style="text-align: center;">LinkExt is a free tool to shorten URLs and generate short links
-      URL shortener allows to create a shortened link making it easy to share
-    </p>
+            <n-form-item>
+              <n-input style="text-align: start;" autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl"/>
+              <n-button type="error" focusable="true" style="background-color: #e12524;" @click="handleShorten">
+                Shorten URL
+              </n-button>
+            </n-form-item>
+          </n-form>
+          <p style="text-align: center;">LinkExt is a free tool to shorten URLs and generate short links
+            URL shortener allows to create a shortened link making it easy to share
+          </p>
         </section>
 
         <section class="content">
           <h2>Simple and fast URL shortener!</h2>
-          <p>ShortURL allows to shorten long links from Instagram, Facebook, YouTube, Twitter, Linked In, WhatsApp, TikTok, blogs and sites. Just paste the long URL and click the Shorten URL button. On the next page, copy the shortened URL and share it on sites, chat and emails. After shortening the URL, check how many clicks it received.</p>
+          <p>ShortURL allows to shorten long links from Instagram, Facebook, YouTube, Twitter, Linked In, WhatsApp,
+            TikTok, blogs and sites. Just paste the long URL and click the Shorten URL button. On the next page, copy
+            the shortened URL and share it on sites, chat and emails. After shortening the URL, check how many clicks it
+            received.</p>
 
           <h2>Shorten, share and track</h2>
-          <p>Your shortened URLs can be used in publications, documents, advertisements, blogs, forums, instant messages, and other locations. Track statistics for your business and projects by monitoring the number of hits from your URL with our click counter.</p>
+          <p>Your shortened URLs can be used in publications, documents, advertisements, blogs, forums, instant
+            messages, and other locations. Track statistics for your business and projects by monitoring the number of
+            hits from your URL with our click counter.</p>
 
           <n-grid :x-gap="12" :y-gap="8" :cols="3">
 
             <n-grid-item>
-      <div>
-        <h3>Easy</h3>
-        <n-icon size="80">
-        <LikeOutlined />
-      </n-icon>
-        <p>ShortURL is easy and fast, enter the long link to get your shortened link</p>
-      </div>
-    </n-grid-item>
+              <div>
+                <h3>Easy</h3>
+                <n-icon size="80">
+                  <LikeOutlined />
+                </n-icon>
+                <p>ShortURL is easy and fast, enter the long link to get your shortened link</p>
+              </div>
+            </n-grid-item>
 
-    <n-grid-item>
-      <div>
-        <h3>Shortened</h3>
-        <n-icon size="80">
-          <AddLinkFilled />
-        </n-icon>
-        <p>Use any link, no matter what size, ShortURL always shortens</p>
-      </div>
-    </n-grid-item>
+            <n-grid-item>
+              <div>
+                <h3>Shortened</h3>
+                <n-icon size="80">
+                  <AddLinkFilled />
+                </n-icon>
+                <p>Use any link, no matter what size, ShortURL always shortens</p>
+              </div>
+            </n-grid-item>
 
-    <n-grid-item>
-      <div>
-        <h3>Secure</h3>
-        <n-icon size="80">
-          <WifiSecure />
-        </n-icon>
-        <p>It is fast and secure, our service has HTTPS protocol and data encryption</p>
-      </div>
-    </n-grid-item>
+            <n-grid-item>
+              <div>
+                <h3>Secure</h3>
+                <n-icon size="80">
+                  <WifiSecure />
+                </n-icon>
+                <p>It is fast and secure, our service has HTTPS protocol and data encryption</p>
+              </div>
+            </n-grid-item>
 
-    <n-grid-item>
-      <div >
-        <h3>Statistics</h3>
-        <n-icon size="80">
-          <AiStatus />
-        </n-icon>
-        <p>Check the number of clicks that your shortened URL received</p>
-      </div>
-    </n-grid-item>
+            <n-grid-item>
+              <div>
+                <h3>Statistics</h3>
+                <n-icon size="80">
+                  <AiStatus />
+                </n-icon>
+                <p>Check the number of clicks that your shortened URL received</p>
+              </div>
+            </n-grid-item>
 
-    <n-grid-item>
-      <div >
-        <h3>Reliable</h3>
-        <n-icon size="80">
-          <Viruses />
-        </n-icon>
-        <p>All links that try to disseminate spam, viruses and malware are deleted</p>
-      </div>
-    </n-grid-item>
+            <n-grid-item>
+              <div>
+                <h3>Reliable</h3>
+                <n-icon size="80">
+                  <Viruses />
+                </n-icon>
+                <p>All links that try to disseminate spam, viruses and malware are deleted</p>
+              </div>
+            </n-grid-item>
 
-    <n-grid-item>
-      <div>
-        <h3>Devices</h3>
-        <n-icon size="80">
-          <DeviceDesktop />
-        </n-icon>
-        <p>Compatible with smartphones, tablets and desktop</p>
-      </div>
-    </n-grid-item>
+            <n-grid-item>
+              <div>
+                <h3>Devices</h3>
+                <n-icon size="80">
+                  <DeviceDesktop />
+                </n-icon>
+                <p>Compatible with smartphones, tablets and desktop</p>
+              </div>
+            </n-grid-item>
 
           </n-grid>
         </section>
@@ -118,15 +123,67 @@
 
     </n-layout-footer>
   </n-layout>
+
+  <n-modal v-model:show="showModal">
+    <n-card style="width: 600px" title="Shorten URL" :bordered="false" size="huge" role="dialog" aria-modal="true">
+      <p style="font-size: 18px; margin: 0; padding: 0;">Full URL: <a :href="originalUrl ? originalUrl : '#'">{{
+          originalUrl }}</a></p>
+      <p style="font-size: 18px; margin: 0; padding: 0;">Bottom is your shortened link</p>
+      <n-form :size="'large'">
+        <n-form-item>
+          <n-input style="text-align: start;" autofocus="true" readonly="true" placeholder="" :value="shortenLink" />
+          <n-button type="error" focusable="true" style="background-color: #e12524;" @click="copyLink">
+            Copy Link
+          </n-button>
+        </n-form-item>
+      </n-form>
+    </n-card>
+  </n-modal>
+
 </template>
 
 <script setup>
-import { NLayout, NLayoutContent, NLayoutFooter, NForm, NFormItem, NButton, NInput, NGrid, NGridItem, NIcon} from 'naive-ui';
+import { NLayout, NLayoutContent, NLayoutFooter, NForm, NFormItem, NButton, NInput, NGrid, NGridItem, NIcon, NModal, NCard, useNotification } from 'naive-ui';
 import { LikeOutlined } from '@vicons/antd';
 import { AddLinkFilled } from '@vicons/material';
 import { WifiSecure, AiStatus } from '@vicons/carbon';
 import { Viruses } from '@vicons/fa';
 import { DeviceDesktop } from '@vicons/tabler';
+
+import { ref } from "vue";
+
+const showModal = ref(false);
+const originalUrl = ref('');
+const shortenLink = ref('');
+
+const notification = useNotification();
+
+const handleShorten = async () => {
+  const response = await fetch(import.meta.env.VITE_APP_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url: originalUrl.value }),
+  });
+
+  const result = await response.json()
+
+  if(!result.shorten){
+    notification["error"]({
+      content: 'Error',
+      meta: "Shorten error",
+    })
+  }
+
+  shortenLink.value = result.shorten;
+  showModal.value = true;
+  notification["success"]({
+    content: 'Success',
+    meta: "Link Shortened Successfully",
+  })
+};
+
 </script>
 
 <style scoped>
@@ -138,19 +195,20 @@ import { DeviceDesktop } from '@vicons/tabler';
   height: 108px;
   background-color: rgba(0, 128, 0, 0.12);
 }
+
 .green {
   height: 108px;
   background-color: rgba(0, 128, 0, 0.24);
 }
 
 .urlbox {
-    margin: 0 auto 20px auto;
-    max-width: 758px;
-    box-shadow: 0 1px 4px #ccc;
-    border-radius: 6px;
-    padding: 10px 30px 5px;
-    background: #fff;
-    text-align: center;
+  margin: 0 auto 20px auto;
+  max-width: 758px;
+  box-shadow: 0 1px 4px #ccc;
+  border-radius: 6px;
+  padding: 10px 30px 5px;
+  background: #fff;
+  text-align: center;
 }
 
 .content {
