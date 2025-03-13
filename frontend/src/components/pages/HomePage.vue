@@ -150,16 +150,28 @@ import { WifiSecure, AiStatus } from '@vicons/carbon';
 import { Viruses } from '@vicons/fa';
 import { DeviceDesktop } from '@vicons/tabler';
 
-import { ref } from "vue";
+import { ref } from "vue";  
 
-const showModal = ref(false);
+const showModal = ref(false);   
 const originalUrl = ref('');
 const shortenLink = ref('');
 
 const notification = useNotification();
 
+const copyLink = async() => {
+  await navigator.clipboard.writeText(shortenLink.value);
+
+  notification["success"]({
+    content: 'Success',
+    meta: "Link Copied Successfully",
+    keepAliveOnHover: true,
+    duration: 2500
+  })
+}
+
 const handleShorten = async () => {
-  const response = await fetch(import.meta.env.VITE_APP_API_URL, {
+  try {
+    const response = await fetch(import.meta.env.VITE_APP_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -169,21 +181,24 @@ const handleShorten = async () => {
 
   const result = await response.json()
 
-  if(!result.shorten){
-    notification["error"]({
-      content: 'Error',
-      meta: "Shorten error",
-    })
-  }
-
   shortenLink.value = result.shorten;
   showModal.value = true;
+
   notification["success"]({
     content: 'Success',
     meta: "Link Shortened Successfully",
+    keepAliveOnHover: true,
+    duration: 2500
   })
+  } catch (error) {
+    notification["error"]({
+      content: 'Error',
+      meta: error instanceof Error ? error.message : String(error),
+      keepAliveOnHover: true,
+      duration: 2500
+    })
+  }
 };
-
 </script>
 
 <style scoped>
