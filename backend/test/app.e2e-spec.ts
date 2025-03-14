@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { AppModule } from './../src/app.module'; // Adjust the path to your app module
 import * as request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { INestApplication } from '@nestjs/common';
+import { AppService } from './../src/app.service';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
+  let appService: AppService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -16,10 +17,43 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(async () => {
+    await app.close();
+  });
+
+  describe('POST /links', () => {
+    it('should create and return a shortened URL', async () => {
+      const originalUrl = 'http://example.com';
+
+      const response = await request(app.getHttpServer())
+        .post('/')
+        .send({ url: originalUrl })
+        .expect(201);
+
+      expect(response.body).toEqual({
+        original: originalUrl,
+        shorten: expect.stringMatching(
+          /^http:\/\/127.0.0.1:\d{1,5}\/[a-zA-Z0-9]{6}$/,
+        ),
+      });
+    });
+  });
+
+  describe('GET /:shortCode', () => {
+    it('should redirect to the original URL', async () => {
+      const shortCode = 'abc123';
+      const originalUrl = 'http://example.com';
+
+      appService = app.get(AppService);
+      jest
+        .spyOn(appService, 'getLink')
+        .mockResolvedValue({ original: originalUrl, shorten: shortCode });
+
+      const response = await request(app.getHttpServer())
+        .get(`/${shortCode}`)
+        .expect(302);
+
+      expect(response.headers.location).toBe(originalUrl);
+    });
   });
 });
