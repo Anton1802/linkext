@@ -14,7 +14,7 @@
           <h1>Paste the URL to be shortened</h1>
           <n-form :size="'large'">
             <n-form-item>
-              <n-input style="text-align: start;" autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl"/>
+              <n-input style="text-align: start;" autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl" :feedback="urlError"/>
               <n-button type="error" focusable="true" style="background-color: #e12524;" @click="handleShorten">
                 Shorten URL
               </n-button>
@@ -128,7 +128,6 @@
     <n-card style="width: 600px" title="Shorten URL" :bordered="false" size="huge" role="dialog" aria-modal="true">
       <p style="font-size: 18px; margin: 0; padding: 0;">Full URL: <a :href="originalUrl ? originalUrl : '#'">{{
           originalUrl }}</a></p>
-      <p style="font-size: 18px; margin: 0; padding: 0;">Bottom is your shortened link</p>
       <n-form :size="'large'">
         <n-form-item>
           <n-input style="text-align: start;" autofocus="true" readonly="true" placeholder="" :value="shortenLink" />
@@ -155,8 +154,14 @@ import { ref } from "vue";
 const showModal = ref(false);   
 const originalUrl = ref('');
 const shortenLink = ref('');
+const urlError = ref("");
 
 const notification = useNotification();
+
+const validateUrl = () => {
+  const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(:\d+)?(\/[^\s]*)?$/;
+  urlError.value = urlPattern.test(originalUrl.value) ? "" : "Please enter a valid URL.";
+};
 
 const copyLink = async() => {
   await navigator.clipboard.writeText(shortenLink.value);
@@ -170,7 +175,19 @@ const copyLink = async() => {
 }
 
 const handleShorten = async () => {
-  try {
+  try { 
+    validateUrl();
+    if(urlError.value){
+        notification["error"]({
+        content: 'Error',
+        meta: "Please enter a valid URL.",
+        keepAliveOnHover: true,
+        duration: 2500
+      })
+
+      return
+    }
+
     const response = await fetch(import.meta.env.VITE_APP_API_URL, {
     method: 'POST',
     headers: {
