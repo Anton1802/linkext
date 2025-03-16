@@ -14,7 +14,7 @@ services:
 
   # Backend Service (Node.js with Mongoose)
   backend:
-    image: node:18-alpine
+    image: linkext_backend
     container_name: backend
     working_dir: /app
     build:
@@ -28,25 +28,23 @@ services:
       - mongo
     volumes:
       - ./backend:/app
-    command: ["yarn", "start:prod"] # Adjust based on your package.json script
 
   # Frontend Service (Vue.js)
   frontend:
-    image: node:18-alpine
+    image: linkext_frontend
     container_name: frontend
     working_dir: /app
     build:
       context: ./frontend
       dockerfile: Dockerfile
     env_file:
-      - ./frontend/.env.docker
+      - ./frontend/.env.local
     ports:
-      - "5173:5173"
+      - "80:80"
     depends_on:
       - backend
     volumes:
       - ./frontend:/app
-    command: ["npm", "run", "dev"]
 
 volumes:
   mongo_data: # This will create a volume for MongoDB data persistence

@@ -1,23 +1,31 @@
-# Step 1: Use an official Node.js runtime as a parent image
+# Step 1: Build the application
 FROM node:23 AS build
 
-# Step 2: Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy the package.json and package-lock.json
+# Copy the package.json and package-lock.json for npm install
 COPY package*.json ./
 
-# Step 4: Install dependencies
+# Install the dependencies
 RUN npm install
 
-# Step 5: Copy the rest of the application code
+# Copy the entire Vue.js project into the container
 COPY . .
 
-# Step 6: Build the Vite project
+# Build the Vue.js app for production
 RUN npm run build
 
-# Step 7: Expose the port the app will run on (default for Vite is 5173)
-EXPOSE 5173
+# Step 2: Serve the application with Nginx
+FROM nginx:alpine
 
-# Step 8: Run the Vite app in production mode
-CMD ["npm", "run", "preview"]
+# Copy the built app from the 'build' stage into the Nginx container
+COPY --from=build /app/dist /usr/share/nginx/html
+
+COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
+
+# Expose the port that Nginx will listen on
+EXPOSE 80
+
+# Command to run the Nginx server
+CMD ["nginx", "-g", "daemon off;"]
