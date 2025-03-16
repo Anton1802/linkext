@@ -198,6 +198,10 @@ const handleShorten = async () => {
 
   const result = await response.json()
 
+  if(result.statusCode !== 200){
+    throw new Error(result.message);
+  }
+
   shortenLink.value = result.shorten;
   showModal.value = true;
 
