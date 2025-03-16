@@ -193,8 +193,6 @@ const handleShorten = async () => {
     url: originalUrl.value
   })
 
-  console.log(response)
-
   if(response.status !== 201){
     throw new Error(response.data.message)
   }
