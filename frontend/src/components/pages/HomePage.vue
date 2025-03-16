@@ -14,8 +14,8 @@
           <h1>Paste the URL to be shortened</h1>
           <n-form :size="'large'">
             <n-form-item>
-              <n-input style="text-align: start;" autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl" :feedback="urlError"/>
-              <n-button type="error" focusable="true" style="background-color: #e12524;" @click="handleShorten">
+              <n-input style="text-align: start;" :autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl" :feedback="urlError"/>
+              <n-button type="error" :focusable="true" style="background-color: #e12524;" @click="handleShorten">
                 Shorten URL
               </n-button>
             </n-form-item>
@@ -130,8 +130,8 @@
           originalUrl }}</a></p>
       <n-form :size="'large'">
         <n-form-item>
-          <n-input style="text-align: start;" autofocus="true" readonly="true" placeholder="" :value="shortenLink" />
-          <n-button type="error" focusable="true" style="background-color: #e12524;" @click="copyLink">
+          <n-input style="text-align: start;" :autofocus="true" readonly="true" placeholder="" :value="shortenLink" />
+          <n-button type="error" :focusable="true" style="background-color: #e12524;" @click="copyLink">
             Copy Link
           </n-button>
         </n-form-item>
@@ -141,7 +141,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { NLayout, NLayoutContent, NLayoutFooter, NForm, NFormItem, NButton, NInput, NGrid, NGridItem, NIcon, NModal, NCard, useNotification } from 'naive-ui';
 import { LikeOutlined } from '@vicons/antd';
 import { AddLinkFilled } from '@vicons/material';
@@ -193,7 +193,9 @@ const handleShorten = async () => {
     url: originalUrl.value
   })
 
-  if(!response.data){
+  console.log(response)
+
+  if(response.status !== 201){
     throw new Error(response.data.message)
   }
 

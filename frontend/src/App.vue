@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HomePage from './components/pages/HomePage.vue';
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
