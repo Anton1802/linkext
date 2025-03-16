@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    env_file:
+      - ./.env 
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Backend Service (Node.js with Mongoose)
+  backend:
+    image: node:18-alpine
+    container_name: backend
+    working_dir: /app
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env 
+    ports:
+      - "3000:3000" # Expose backend port
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app
+    command: ["yarn", "start:prod"] # Adjust based on your package.json script
+
+  # Frontend Service (Vue.js)
+  frontend:
+    image: node:18-alpine
+    container_name: frontend
+    working_dir: /app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "run", "dev"]
+
+volumes:
+  mongo_data: # This will create a volume for MongoDB data persistence
