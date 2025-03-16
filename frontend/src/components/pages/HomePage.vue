@@ -150,6 +150,7 @@ import { Viruses } from '@vicons/fa';
 import { DeviceDesktop } from '@vicons/tabler';
 
 import { ref } from "vue";  
+import axios from 'axios';
 
 const showModal = ref(false);   
 const originalUrl = ref('');
@@ -188,21 +189,15 @@ const handleShorten = async () => {
       return
     }
 
-    const response = await fetch(import.meta.env.VITE_APP_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ url: originalUrl.value }),
-  });
+  const response = await axios.post(import.meta.env.VITE_APP_API_URL, {
+    url: originalUrl.value
+  })
 
-  const result = await response.json()
-
-  if(result.statusCode !== 200){
-    throw new Error(result.message);
+  if(!response.data){
+    throw new Error(response.data.message)
   }
 
-  shortenLink.value = result.shorten;
+  shortenLink.value = response.data.shorten;
   showModal.value = true;
 
   notification["success"]({
