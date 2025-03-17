@@ -27,12 +27,14 @@ export class AppController {
       );
     }
 
-    const resultUrl = `${request.protocol}://${request.get('host')}/${linkUrl.shorten}`;
+    if (linkUrl.shorten && typeof linkUrl.shorten === 'string') {
+      const resultUrl = this.appService.getFullLink(linkUrl.shorten);
 
-    return {
-      original: link.url,
-      shorten: resultUrl,
-    };
+      return {
+        original: link.url,
+        shorten: resultUrl,
+      };
+    }
   }
 
   @Get('/:shortCode')

@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { nanoid } from 'nanoid';
 import { Cron } from '@nestjs/schedule';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
@@ -13,6 +14,7 @@ export class AppService {
   constructor(
     @InjectModel(Link.name) private linkModel: Model<Link>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private configService: ConfigService,
   ) {}
 
   async createLink(url: string) {
@@ -63,6 +65,12 @@ export class AppService {
     } catch (error) {
       return new HttpException(error, 500);
     }
+  }
+
+  getFullLink(shortCode: string) {
+    const resultUrl = `http://${this.configService.getOrThrow<string>('HOST')}:${this.configService.getOrThrow<string>('PORT')}/${shortCode}`;
+
+    return resultUrl;
   }
 
   async getLink(shortCode: string): Promise<Link | HttpException> {
