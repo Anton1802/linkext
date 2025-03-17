@@ -6,7 +6,7 @@ services:
     image: mongo:latest
     container_name: mongo_db
     env_file:
-      - ./.env.production 
+      - ./.env 
     ports:
       - "27017:27017"
     volumes:
@@ -14,7 +14,7 @@ services:
 
   # Backend Service (Node.js with Mongoose)
   backend:
-    image: linkext_backend
+    image: $DOCKER_USERNAME/linkext_backend:latest
     container_name: backend
     working_dir: /app
     build:
@@ -31,7 +31,7 @@ services:
 
   # Frontend Service (Vue.js)
   frontend:
-    image: linkext_frontend
+    image: $DOCKER_USERNAME/linkext_frontend:latest
     container_name: frontend
     working_dir: /app
     build:

@@ -1,0 +1,44 @@
+name: Deploy Docker Compose
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: In to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and public backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/linkext_backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/linkext_backend:latest
+
+      - name: Build and public frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/linkext_frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/linkext_frontend:latest
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy on server with SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /path/to/your/app
+            docker-compose pull
+            docker-compose up -d
+            docker image prune -f
