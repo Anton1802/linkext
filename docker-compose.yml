@@ -6,7 +6,7 @@ services:
     image: mongo:latest
     container_name: mongo_db
     env_file:
-      - ./.env.docker 
+      - ./.env.production 
     ports:
       - "27017:27017"
     volumes:
@@ -21,7 +21,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     env_file:
-      - ./backend/.env.docker
+      - ./backend/.env.production
     ports:
       - "3000:3000" # Expose backend port
     depends_on:
@@ -38,7 +38,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     env_file:
-      - ./frontend/.env.local
+      - ./frontend/.env.production
     ports:
       - "80:80"
     depends_on:
