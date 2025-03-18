@@ -3,42 +3,59 @@ name: Deploy Docker Compose
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  build_and_push:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: In to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build and public backend
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/linkext_backend:latest ./backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/linkext_backend:latest
-
-      - name: Build and public frontend
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/linkext_frontend:latest ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/linkext_frontend:latest
-
   deploy:
-    needs: build_and_push
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy on server with SSH
+      - name: Update code in repository
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /path/to/your/app
-            docker-compose pull
-            docker-compose up -d
-            docker image prune -f
+            cd /root/linkext
+            git fetch --all
+            git reset --hard origin/master
+            git clean -fd
+
+      - name: Deploy on server with SSH
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          HOST: ${{ vars.SERVER_HOST }}
+          PORT: ${{ vars.PORT }}
+          MONGODB_URI: ${{ vars.MONGODB_URI }}
+          NODE_ENV: production
+          ALLOWED_ORIGINS: ${{ vars.ALLOWED_ORIGINS }}
+          VITE_APP_API_URL: ${{ vars.VITE_APP_API_URL }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL 
+          script: |
+            echo "Printing environment variables:"
+            echo "HOST: $HOST"
+            echo "SERVER_USER: $SERVER_USER"
+            echo "PORT: $PORT"
+            echo "MONGODB_URI: $MONGODB_URI"
+            echo "NODE_ENV: $NODE_ENV"
+            echo "ALLOWED_ORIGINS: $ALLOWED_ORIGINS"
+            echo "VITE_APP_API_URL: $VITE_APP_API_URL"
+
+            cd /root/linkext
+
+            docker compose down
+            docker compose pull
+            docker compose up -d --build
+            docker system prune -af

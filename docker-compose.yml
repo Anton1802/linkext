@@ -5,46 +5,51 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo_db
-    env_file:
-      - ./.env 
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    command: ["mongod", "--noauth"]
+    environment:
+      - MONGO_INITDB_DATABASE=db
 
   # Backend Service (Node.js with Mongoose)
   backend:
-    image: $DOCKER_USERNAME/linkext_backend:latest
+    image: backend
     container_name: backend
     working_dir: /app
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env.production
     ports:
       - "3000:3000" # Expose backend port
+    volumes:
+    - ./src:/app/src 
     depends_on:
       - mongo
-    volumes:
-      - ./backend:/app
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - HOST=0.0.0.0
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
 
   # Frontend Service (Vue.js)
   frontend:
-    image: $DOCKER_USERNAME/linkext_frontend:latest
+    image: frontend
     container_name: frontend
     working_dir: /app
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    env_file:
-      - ./frontend/.env.production
+    volumes:
+      - ./src:/app/src 
     ports:
       - "80:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/app
+    environment:
+      - VITE_APP_API_URL=${VITE_APP_API_URL}
 
 volumes:
   mongo_data: # This will create a volume for MongoDB data persistence
