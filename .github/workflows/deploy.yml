@@ -32,27 +32,18 @@ jobs:
       - name: Deploy on server with SSH
         uses: appleboy/ssh-action@v0.1.10
         env:
-          HOST: ${{ vars.SERVER_HOST }}
-          PORT: ${{ vars.PORT }}
           MONGODB_URI: ${{ vars.MONGODB_URI }}
           NODE_ENV: production
           ALLOWED_ORIGINS: ${{ vars.ALLOWED_ORIGINS }}
           VITE_APP_API_URL: ${{ vars.VITE_APP_API_URL }}
+          LINK_HOST: ${{ vars.LINK_HOST }}
+          LINK_PORT: ${{ vars.LINK_PORT }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL 
+          envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL,LINK_HOST,LINK_PORT
           script: |
-            echo "Printing environment variables:"
-            echo "HOST: $HOST"
-            echo "SERVER_USER: $SERVER_USER"
-            echo "PORT: $PORT"
-            echo "MONGODB_URI: $MONGODB_URI"
-            echo "NODE_ENV: $NODE_ENV"
-            echo "ALLOWED_ORIGINS: $ALLOWED_ORIGINS"
-            echo "VITE_APP_API_URL: $VITE_APP_API_URL"
-
             cd /root/linkext
 
             docker compose down
