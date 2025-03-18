@@ -29,7 +29,7 @@ jobs:
             git reset --hard origin/master
             git clean -fd
 
-      - name: Deploy on server with SSH
+      - name: Create .env file with environment variables
         uses: appleboy/ssh-action@v0.1.10
         env:
           MONGODB_URI: ${{ vars.MONGODB_URI }}
@@ -45,6 +45,24 @@ jobs:
           envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL,LINK_HOST,LINK_PORT
           script: |
             cd /root/linkext
+            echo "MONGODB_URI=${{ vars.MONGODB_URI }}" > .env
+            echo "NODE_ENV=production" >> .env
+            echo "ALLOWED_ORIGINS=${{ vars.ALLOWED_ORIGINS }}" >> .env
+            echo "VITE_APP_API_URL=${{ vars.VITE_APP_API_URL }}" >> .env
+            echo "LINK_HOST=${{ vars.LINK_HOST }}" >> .env
+            echo "LINK_PORT=${{ vars.LINK_PORT }}" >> .env
+
+      - name: Deploy on server with SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /root/linkext
+
+            cp .env backend/.env
+            cp .env frontend/.env
 
             docker compose down
             docker compose pull

@@ -27,14 +27,8 @@ services:
     - ./src:/app/src 
     depends_on:
       - mongo
-    environment:
-      - MONGODB_URI=${MONGODB_URI}
-      - NODE_ENV=${NODE_ENV}
-      - PORT=3000
-      - HOST=0.0.0.0
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-      - LINK_HOST=${LINK_HOST}
-      - LINK_PORT=${LINK_PORT}
+    env_file:
+      - ./backend/.env
 
   # Frontend Service (Vue.js)
   frontend:
@@ -50,8 +44,8 @@ services:
       - "80:80"
     depends_on:
       - backend
-    environment:
-      - VITE_APP_API_URL=${VITE_APP_API_URL}
+    env_file:
+      - ./frontend/.env
 
 volumes:
   mongo_data: # This will create a volume for MongoDB data persistence
