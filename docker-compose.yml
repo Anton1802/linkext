@@ -12,6 +12,7 @@ services:
     command: ["mongod", "--noauth"]
     environment:
       - MONGO_INITDB_DATABASE=db
+    restart: unless-stopped
 
   # Backend Service (Node.js with Mongoose)
   backend:
@@ -29,6 +30,7 @@ services:
       - mongo
     env_file:
       - ./backend/.env
+    restart: unless-stopped
 
   # Frontend Service (Vue.js)
   frontend:
@@ -46,6 +48,7 @@ services:
       - backend
     env_file:
       - ./frontend/.env
+    restart: unless-stopped
 
 volumes:
   mongo_data: # This will create a volume for MongoDB data persistence
