@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  # Nginx Service
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/key.pem:/root/ssl/key.pem
+      - ./nginx/cert.pem:/root/ssl/cert.pem
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+
   # MongoDB Service
   mongo:
     image: mongo:latest
