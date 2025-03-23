@@ -14,7 +14,8 @@
           <h1>Paste the URL to be shortened</h1>
           <n-form :size="'large'">
             <n-form-item>
-              <n-input style="text-align: start;" :autofocus="true" placeholder="Enter the link here" v-model:value="originalUrl" :feedback="urlError"/>
+              <n-input class="urlbox_input" status="error" style="text-align: start; margin-right: 2px" :autofocus="true" placeholder="Enter the link here"
+                v-model:value="originalUrl" :feedback="urlError" />
               <n-button type="error" :focusable="true" style="background-color: #e12524;" @click="handleShorten">
                 Shorten URL
               </n-button>
@@ -127,10 +128,11 @@
   <n-modal v-model:show="showModal">
     <n-card style="width: 600px" title="Shorten URL" :bordered="false" size="huge" role="dialog" aria-modal="true">
       <p style="font-size: 18px; margin: 0; padding: 0;">Full URL: <a :href="originalUrl ? originalUrl : '#'">{{
-          originalUrl }}</a></p>
+        originalUrl }}</a></p>
       <n-form :size="'large'">
         <n-form-item>
-          <n-input style="text-align: start;" :autofocus="true" readonly="true" placeholder="" :value="shortenLink" />
+          <n-input style="text-align: start;" :autofocus="true" readonly="true" placeholder="" status="error" />
+            :value="shortenLink" />
           <n-button type="error" :focusable="true" style="background-color: #e12524;" @click="copyLink">
             Copy Link
           </n-button>
@@ -149,10 +151,10 @@ import { WifiSecure, AiStatus } from '@vicons/carbon';
 import { Viruses } from '@vicons/fa';
 import { DeviceDesktop } from '@vicons/tabler';
 
-import { ref } from "vue";  
+import { ref } from "vue";
 import axios from 'axios';
 
-const showModal = ref(false);   
+const showModal = ref(false);
 const originalUrl = ref('');
 const shortenLink = ref('');
 const urlError = ref("");
@@ -164,7 +166,7 @@ const validateUrl = () => {
   urlError.value = urlPattern.test(originalUrl.value) ? "" : "Please enter a valid URL.";
 };
 
-const copyLink = async() => {
+const copyLink = async () => {
   await navigator.clipboard.writeText(shortenLink.value);
 
   notification["success"]({
@@ -176,10 +178,10 @@ const copyLink = async() => {
 }
 
 const handleShorten = async () => {
-  try { 
+  try {
     validateUrl();
-    if(urlError.value){
-        notification["error"]({
+    if (urlError.value) {
+      notification["error"]({
         content: 'Error',
         meta: "Please enter a valid URL.",
         keepAliveOnHover: true,
@@ -189,23 +191,23 @@ const handleShorten = async () => {
       return
     }
 
-  const response = await axios.post(import.meta.env.VITE_APP_API_URL, {
-    url: originalUrl.value
-  })
+    const response = await axios.post(import.meta.env.VITE_APP_API_URL, {
+      url: originalUrl.value
+    })
 
-  if(response.status !== 201){
-    throw new Error(response.data.message)
-  }
+    if (response.status !== 201) {
+      throw new Error(response.data.message)
+    }
 
-  shortenLink.value = response.data.shorten;
-  showModal.value = true;
+    shortenLink.value = response.data.shorten;
+    showModal.value = true;
 
-  notification["success"]({
-    content: 'Success',
-    meta: "Link Shortened Successfully",
-    keepAliveOnHover: true,
-    duration: 2500
-  })
+    notification["success"]({
+      content: 'Success',
+      meta: "Link Shortened Successfully",
+      keepAliveOnHover: true,
+      duration: 2500
+    })
   } catch (error) {
     notification["error"]({
       content: 'Error',
