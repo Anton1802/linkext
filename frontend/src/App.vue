@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomePage from './components/pages/HomePage.vue';
+import HomePage from './components/pages/Home/HomePage.vue';
 import 'vfonts/Lato.css'
 import 'vfonts/FiraCode.css'
 import { NNotificationProvider } from 'naive-ui';
