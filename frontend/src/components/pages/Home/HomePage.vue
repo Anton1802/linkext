@@ -8,6 +8,7 @@
     <FooterComponent />
   </MainLayoutComponent>
   <ModalComponent />
+  <ModalFooterLinksComponent />
 </template>
 
 <script lang="ts">
@@ -19,6 +20,7 @@ import UrlBoxComponent from "./UrlBoxComponent.vue";
 import ContentComponent from "./ContentComponent.vue";
 import ContentLayoutComponent from "./ContentLayoutComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
+import ModalFooterLinksComponent from "./ModalFooterLinksComponent.vue";
 
 export default defineComponent({
   name: "HomePage",
@@ -29,7 +31,8 @@ export default defineComponent({
     UrlBoxComponent,
     ContentComponent,
     ContentLayoutComponent,
-    ModalComponent
+    ModalComponent,
+    ModalFooterLinksComponent
   },
 })
 </script>

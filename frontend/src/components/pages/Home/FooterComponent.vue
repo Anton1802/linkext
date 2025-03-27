@@ -1,5 +1,5 @@
 <template>
-<n-layout-footer style="background-color: #f5f5f5; padding: 20px; background: #333; border-top: 4px solid #e12524;">
+  <n-layout-footer style="background-color: #f5f5f5; padding: 20px; background: #333; border-top: 4px solid #e12524;">
     <div style="display: flex; justify-content: center; align-items: center;">
       <span style="color: #fff">© 2025 LinkExt. All Rights Reserved.</span>
     </div>
@@ -7,12 +7,14 @@
     <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; padding: 20px;">
       <!-- Footer Menu -->
       <div style="display: inline-block; gap:20px;" class="footer-menu">
-        <n-button class="footer-link" style="margin-right: 20px; color: #e12524" text>Privacy
+        <n-button @click="handleClick('privacyPolicy')" class="footer-link" style="margin-right: 20px; color: #e12524"
+          text>Privacy
           Policy</n-button>
 
-        <n-button class="footer-link" style="margin-right: 20px; color: #e12524" text>Terms of
+        <n-button @click="handleClick('termsOfService')" class="footer-link" style="margin-right: 20px; color: #e12524"
+          text>Terms of
           Service</n-button>
-        <n-button class="footer-link" style="color: #e12524;" text>Help</n-button>
+        <n-button @click="handleClick('helpSupport')" class="footer-link" style="color: #e12524;" text>Help</n-button>
       </div>
     </div>
   </n-layout-footer>
@@ -21,12 +23,25 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { NLayoutFooter } from 'naive-ui';
+import { useSharedStore } from '../../../store';
 
 export default defineComponent({
-    name: "FooterComponent",
+  name: "FooterComponent",
     components: {
         NLayoutFooter
-    }
+    },
+    setup(){
+        const handleClick = (key: string) => {
+            const store = useSharedStore()
+
+
+            store.modalFooterLinksKeyText = key
+            store.showModalFooterLinks = true;
+        }
+        return {
+            handleClick
+        }
+    },
 })
 </script>
 
