@@ -38,6 +38,8 @@ export class AuthController {
           : false,
     });
 
-    return req.user;
+    const frontedUrl = process.env.ALLOWED_ORIGINS?.split(',') || [];
+
+    return res.redirect(frontedUrl[0]);
   }
 }

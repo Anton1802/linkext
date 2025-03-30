@@ -10,7 +10,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { NModal, NCard } from 'naive-ui';
-import { useSharedStore } from '../../../store';
+import { useSharedStore } from '../../../stores/store';
 
 const textInfo = {
     privacyPolicy: {

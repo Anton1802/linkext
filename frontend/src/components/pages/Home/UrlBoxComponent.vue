@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { NForm, NFormItem, NButton, NInput, useNotification } from 'naive-ui';
-import { useSharedStore } from '../../../store';
+import { useSharedStore } from '../../../stores/store';
 import axios from 'axios';
 
 export default defineComponent({

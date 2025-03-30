@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { NForm, NFormItem, NButton, NInput, NModal, NCard, useNotification } from 'naive-ui';
-import { useSharedStore } from '../../../store';
+import { useSharedStore } from '../../../stores/store';
 
 export default defineComponent({
     name: "ModalComponent",
