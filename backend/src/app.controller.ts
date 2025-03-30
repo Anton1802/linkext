@@ -8,14 +8,17 @@ import {
   Post,
   Req,
   Res,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request, Response } from 'express';
+import { EmailInterceptor } from './auth/interceptors/user.interceptor';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @UseInterceptors(EmailInterceptor)
   @Post()
   async createLink(@Body() link: { url: string }, @Req() request: Request) {
     const linkUrl = await this.appService.createLink(link.url);
@@ -37,6 +40,7 @@ export class AppController {
     }
   }
 
+  @UseInterceptors(EmailInterceptor)
   @Get('/:shortCode')
   async getLink(
     @Param('shortCode') shortCode: string,
