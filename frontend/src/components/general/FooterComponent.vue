@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { NLayoutFooter } from 'naive-ui';
-import { useSharedStore } from '../../../stores/store';
+import { useSharedStore } from '../../stores/store';
 
 export default defineComponent({
   name: "FooterComponent",

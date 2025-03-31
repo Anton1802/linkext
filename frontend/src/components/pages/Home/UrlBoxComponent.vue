@@ -94,7 +94,7 @@ export default defineComponent({
 .urlbox {
   margin: 0 auto 20px auto;
   max-width: 758px;
-  box-shadow: 0 1px 4px #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
   border-radius: 6px;
   padding: 10px 30px 5px;
   background: #fff;
