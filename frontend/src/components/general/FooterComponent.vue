@@ -48,6 +48,7 @@ export default defineComponent({
 <style scoped>
 .footer-link:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (max-width: 1000px) {

@@ -8,6 +8,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './auth/auth.module';
+import { UserSchema } from './schemas/user.schema';
 
 @Module({
   imports: [
@@ -21,7 +22,10 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: 'Link', schema: LinkSchema }]),
+    MongooseModule.forFeature([
+      { name: 'Link', schema: LinkSchema },
+      { name: 'User', schema: UserSchema },
+    ]),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,

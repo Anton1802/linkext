@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 import { Cron } from '@nestjs/schedule';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ConfigService } from '@nestjs/config';
+import { User } from './schemas/user.schema';
 
 @Injectable()
 export class AppService {
@@ -13,11 +14,27 @@ export class AppService {
 
   constructor(
     @InjectModel(Link.name) private linkModel: Model<Link>,
+    @InjectModel(User.name) private userModel: Model<User>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private configService: ConfigService,
   ) {}
 
-  async createLink(url: string) {
+  async addLinkInUser(result: any, email: string) {
+    const user = await this.userModel.findOne({ email });
+
+    if (user) {
+      await this.userModel.updateOne(
+        { email },
+        { $push: { history: result._id } },
+      );
+
+      return;
+    }
+
+    await this.userModel.create({ email, history: [result._id] });
+  }
+
+  async createLink(url: string, email: string) {
     try {
       const cache = await this.cacheManager.get(url);
 
@@ -61,7 +78,21 @@ export class AppService {
         shorten: shortCode,
       });
 
-      return this.linkModel.create({ shorten: shortCode, original: url });
+      const result = await this.linkModel.create({
+        shorten: shortCode,
+        original: url,
+      });
+
+      await this.addLinkInUser(result, email);
+
+      // const user = await this.userModel
+      //   .findOne({
+      //     email,
+      //   })
+      //   .populate('history')
+      //   .exec();
+
+      return result;
     } catch (error) {
       return new HttpException(error, 500);
     }

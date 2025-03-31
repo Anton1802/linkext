@@ -13,6 +13,7 @@ import {
 import { AppService } from './app.service';
 import { Request, Response } from 'express';
 import { EmailInterceptor } from './auth/interceptors/user.interceptor';
+import { RequestWithUser } from './interfaces/request';
 
 @Controller()
 export class AppController {
@@ -20,8 +21,14 @@ export class AppController {
 
   @UseInterceptors(EmailInterceptor)
   @Post()
-  async createLink(@Body() link: { url: string }, @Req() request: Request) {
-    const linkUrl = await this.appService.createLink(link.url);
+  async createLink(
+    @Body() link: { url: string },
+    @Req() request: RequestWithUser,
+  ) {
+    const linkUrl = await this.appService.createLink(
+      link.url,
+      request.user?.email,
+    );
 
     if (linkUrl instanceof HttpException) {
       throw new HttpException(

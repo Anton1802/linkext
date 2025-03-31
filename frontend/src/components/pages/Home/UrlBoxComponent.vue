@@ -21,6 +21,7 @@ import { defineComponent, ref } from 'vue';
 import { NForm, NFormItem, NButton, NInput, useNotification } from 'naive-ui';
 import { useSharedStore } from '../../../stores/store';
 import axios from 'axios';
+import { useAuthStore } from '../../../stores/auth.store';
 
 export default defineComponent({
   name: "UrlBoxComponent",
@@ -34,6 +35,7 @@ export default defineComponent({
     const notification = useNotification();
     const urlError = ref("");
     const store = useSharedStore()
+    const authStore = useAuthStore()
 
     const validateUrl = () => {
       const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(:\d+)?(\/[^\s]*)?$/;
@@ -55,7 +57,9 @@ export default defineComponent({
         }
 
         const response = await axios.post(import.meta.env.VITE_APP_API_URL, {
-          url: store.originalUrl
+          url: store.originalUrl,
+        }, {
+          withCredentials: true,
         })
 
         if (response.status !== 201) {
@@ -94,7 +98,7 @@ export default defineComponent({
 .urlbox {
   margin: 0 auto 20px auto;
   max-width: 758px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   padding: 10px 30px 5px;
   background: #fff;
