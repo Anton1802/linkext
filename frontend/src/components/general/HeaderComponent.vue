@@ -6,7 +6,7 @@
         style="font: 300 25px asap,arial; color: #e12524; letter-spacing: -1px; text-shadow: 0 2px 2px #ddd; word-wrap: break-word; text-decoration: none;">LinkExt</a>
       <n-flex>
         <n-avatar v-if="!authStore.isAuth" @click="redirect" class="avatar" :size="32"
-          src="./../../../../public/icons/person-not-auth.png" />
+          src="./../../../../src/icons/person-not-auth.png" />
         <n-dropdown
           v-if="authStore.isAuth && authStore.user"
           placement="bottom"
