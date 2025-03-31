@@ -3,7 +3,7 @@
     style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background-color: rgb(51, 51, 51); padding: 20px; border-bottom: 4px solid rgb(225, 37, 36);">
     <n-flex justify="space-between" align="center">
       <a href="#"
-        style="font: 300 25px asap,arial; color: #e12524; letter-spacing: -1px; text-shadow: 0 2px 2px #ddd; word-wrap: break-word; text-decoration: none;">LinkExt</a>
+        style="font: 300 25px asap,arial; color: #e12524; letter-spacing: -1px; word-wrap: break-word; text-decoration: none;">LinkExt</a>
       <n-flex>
         <n-avatar v-if="!authStore.isAuth" @click="redirect" class="avatar" :size="32"
           src="./../../../../src/icons/person-not-auth.png" />
