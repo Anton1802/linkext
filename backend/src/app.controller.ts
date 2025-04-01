@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,9 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { EmailInterceptor } from './auth/interceptors/user.interceptor';
 import { RequestWithUser } from './interfaces/request';
+import * as cronParser from 'cron-parser';
 
 @Controller()
 export class AppController {
@@ -47,6 +49,12 @@ export class AppController {
     }
   }
 
+  @Get('execution-time-clear-link')
+  getExecutionTimeClearLink() {
+    const interval = cronParser.CronExpressionParser.parse('0 0 * * *');
+    return interval.next().toDate();
+  }
+
   @UseInterceptors(EmailInterceptor)
   @Get('/:shortCode')
   async getLink(
@@ -60,5 +68,15 @@ export class AppController {
     }
 
     return response.redirect(link.original);
+  }
+
+  @UseInterceptors(EmailInterceptor)
+  @Get('/user-history/:email')
+  async getHistoryUser(@Param('email') email: string) {
+    if (!email) {
+      return new BadRequestException('Not transfer email!');
+    }
+    const history = await this.appService.getHistoryUser(email);
+    return history;
   }
 }

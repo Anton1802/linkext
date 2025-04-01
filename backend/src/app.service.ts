@@ -1,4 +1,10 @@
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Link } from './schemas/link.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -119,6 +125,21 @@ export class AppService {
     this.logger.log('Get link: ', originalUrl);
 
     return originalUrl;
+  }
+
+  async getHistoryUser(email: string) {
+    const user = await this.userModel
+      .findOne({
+        email,
+      })
+      .populate('history')
+      .exec();
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user?.history;
   }
 
   @Cron('0 0 * * *')

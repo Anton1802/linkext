@@ -2684,6 +2684,13 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
+cron-parser@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/cron-parser/-/cron-parser-5.1.0.tgz#5b7f87d5b5c1311f2435aa9cc5a01c0725f0156d"
+  integrity sha512-dnR1hHR7iGJe+Jev72sareuGO+/AzzbVGoy95lkXuw+ftvDkERdnXRnJMJ+ArxKId5QnLXGckFgVGCCwAMhlRw==
+  dependencies:
+    luxon "^3.5.0"
+
 cron@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/cron/-/cron-3.5.0.tgz#e8caa384e998ed275e19598df4dbd0e8578c35d9"
@@ -4508,6 +4515,11 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
+
+luxon@^3.5.0:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.6.1.tgz#d283ffc4c0076cb0db7885ec6da1c49ba97e47b0"
+  integrity sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==
 
 luxon@~3.5.0:
   version "3.5.0"
