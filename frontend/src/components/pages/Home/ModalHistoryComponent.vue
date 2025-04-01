@@ -4,7 +4,6 @@
       <template #header>
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <h3 style="padding: 0; margin: 0;">My History</h3>
-          <n-text>Clear in <n-text style="color: red">8 minutes</n-text></n-text>
           <n-button quaternary circle @click="historyStore.showModalHistory = false">
             <template #icon>
               <n-icon><close-icon /></n-icon>
@@ -66,7 +65,6 @@ export default defineComponent({
     setup() {
         const historyStore = useHistoryStore()
         const notification = useNotification();
-        historyStore.getLinks()
         
         const truncateUrl = (url: string, maxLength = 40) => {
           if (url.length <= maxLength) return url;

@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { NAvatar, NFlex, NDropdown, DropdownOption } from 'naive-ui';
+import { NAvatar, NFlex, NDropdown, DropdownOption, useNotification } from 'naive-ui';
 import { useAuthStore } from '../../stores/auth.store';
 import { useHistoryStore } from '../../stores/history.store';
 
@@ -35,6 +35,7 @@ export default defineComponent({
   setup() {
     const authStore = useAuthStore();
     const historyStore = useHistoryStore()
+    const notification = useNotification();
 
     const dropdownOptions = ref<DropdownOption[]>([
       {
@@ -58,7 +59,17 @@ export default defineComponent({
     const handleDropdownSelect = (key: string | number) => {
       switch (key) {
         case 'history':
-          historyStore.showModalHistory = true;
+          historyStore.getLinks()
+          if(historyStore.links.length){
+            historyStore.showModalHistory = true;
+          } else {
+            notification["warning"]({
+              content: 'Warning',
+              meta: "Links in history not found!",
+              keepAliveOnHover: true,
+              duration: 2500
+            })
+          }
           break;
         case 'signout':
           authStore.logout();
