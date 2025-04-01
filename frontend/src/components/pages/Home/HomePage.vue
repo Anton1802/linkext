@@ -9,6 +9,7 @@
   </MainLayoutComponent>
   <ModalComponent />
   <ModalFooterLinksComponent />
+  <ModalHistoryComponent />
 </template>
 
 <script lang="ts">
@@ -21,6 +22,7 @@ import ContentComponent from "./ContentComponent.vue";
 import ContentLayoutComponent from "./ContentLayoutComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
 import ModalFooterLinksComponent from "./ModalFooterLinksComponent.vue";
+import ModalHistoryComponent from "./ModalHistoryComponent.vue";
 
 export default defineComponent({
   name: "HomePage",
@@ -32,7 +34,8 @@ export default defineComponent({
     ContentComponent,
     ContentLayoutComponent,
     ModalComponent,
-    ModalFooterLinksComponent
+    ModalFooterLinksComponent,
+    ModalHistoryComponent,
   },
 })
 </script>

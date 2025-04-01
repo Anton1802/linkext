@@ -21,7 +21,6 @@ import { defineComponent, ref } from 'vue';
 import { NForm, NFormItem, NButton, NInput, useNotification } from 'naive-ui';
 import { useSharedStore } from '../../../stores/store';
 import axios from 'axios';
-import { useAuthStore } from '../../../stores/auth.store';
 
 export default defineComponent({
   name: "UrlBoxComponent",
@@ -35,7 +34,6 @@ export default defineComponent({
     const notification = useNotification();
     const urlError = ref("");
     const store = useSharedStore()
-    const authStore = useAuthStore()
 
     const validateUrl = () => {
       const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(:\d+)?(\/[^\s]*)?$/;

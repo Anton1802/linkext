@@ -7,17 +7,13 @@
       <n-flex>
         <n-avatar v-if="!authStore.isAuth" @click="redirect" class="avatar" :size="32"
           src="./../../../../src/icons/person-not-auth.png" />
-        <n-dropdown
-          v-if="authStore.isAuth && authStore.user"
-          placement="bottom"
-          trigger="click"
-          :options="dropdownOptions"
-          @select="handleDropdownSelect"
-        >
-        <div class="avatar-container">
-          <n-avatar v-if="authStore.isAuth && authStore.user" class="avatar cursor-pointer" :style="{ transition: 'all 0.3s ease' }" :size="32" :src="authStore.user?.avatar" />
-        </div>
-      </n-dropdown>
+        <n-dropdown v-if="authStore.isAuth && authStore.user" placement="bottom" trigger="click"
+          :options="dropdownOptions" @select="handleDropdownSelect">
+          <div class="avatar-container">
+            <n-avatar v-if="authStore.isAuth && authStore.user" class="avatar cursor-pointer"
+              :style="{ transition: 'all 0.3s ease' }" :size="32" :src="authStore.user?.avatar" />
+          </div>
+        </n-dropdown>
       </n-flex>
     </n-flex>
   </n-layout-header>
@@ -25,9 +21,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { NAvatar, NFlex, NDropdown, DropdownOption } from 'naive-ui';
 import { useAuthStore } from '../../stores/auth.store';
+import { useHistoryStore } from '../../stores/history.store';
 
 export default defineComponent({
   name: "HeaderComponent",
@@ -38,7 +34,7 @@ export default defineComponent({
   },
   setup() {
     const authStore = useAuthStore();
-    const router = useRouter();
+    const historyStore = useHistoryStore()
 
     const dropdownOptions = ref<DropdownOption[]>([
       {
@@ -62,7 +58,7 @@ export default defineComponent({
     const handleDropdownSelect = (key: string | number) => {
       switch (key) {
         case 'history':
-          // TODO: add modal history
+          historyStore.showModalHistory = true;
           break;
         case 'signout':
           authStore.logout();
