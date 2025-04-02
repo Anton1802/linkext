@@ -56,10 +56,10 @@ export default defineComponent({
       window.location.href = `${import.meta.env.VITE_APP_API_URL}/auth/google`;
     }
 
-    const handleDropdownSelect = (key: string | number) => {
+    const handleDropdownSelect = async(key: string | number) => {
       switch (key) {
         case 'history':
-          historyStore.getLinks()
+          await historyStore.getLinks()
           if(historyStore.links.length){
             historyStore.showModalHistory = true;
           } else {
