@@ -95,6 +95,9 @@ export class AppService {
     await this.linkModel.deleteMany({
       createdAt: { $lt: new Date(Date.now() - 86400000) },
     });
+    await this.userModel.deleteMany({
+      createdAt: { $lt: new Date(Date.now() - 86400000) },
+    });
     this.logger.log('Deleted expired links');
   }
 }
