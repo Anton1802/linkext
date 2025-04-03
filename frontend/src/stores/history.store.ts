@@ -17,9 +17,11 @@ export const useHistoryStore = defineStore("history", () => {
     const getLinks = async() => {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/user-history/${authStore.user.email}`)
 
-        if(response.data){
-            links.value = response.data;
+        if(!response.data){
+            return
         }
+
+        links.value = response.data;
     }
 
     const getTimeExecuteScheduler = async() => {
