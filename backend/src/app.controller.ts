@@ -15,7 +15,6 @@ import { AppService } from './app.service';
 import { Response } from 'express';
 import { EmailInterceptor } from './auth/interceptors/user.interceptor';
 import { RequestWithUser } from './interfaces/request';
-import * as cronParser from 'cron-parser';
 
 @Controller()
 export class AppController {
@@ -47,12 +46,6 @@ export class AppController {
         shorten: resultUrl,
       };
     }
-  }
-
-  @Get('execution-time-clear-link')
-  getExecutionTimeClearLink() {
-    const interval = cronParser.CronExpressionParser.parse('0 0 * * *');
-    return interval.next().toDate();
   }
 
   @UseInterceptors(EmailInterceptor)

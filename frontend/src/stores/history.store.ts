@@ -24,14 +24,9 @@ export const useHistoryStore = defineStore("history", () => {
         links.value = response.data;
     }
 
-    const getTimeExecuteScheduler = async() => {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/execution-time-clear-link`)
-    }
-
     return {
         showModalHistory,
         getLinks,
-        getTimeExecuteScheduler,
         api,
         links
     }
