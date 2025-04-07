@@ -1,5 +1,5 @@
 <template>
-    <n-layout-content style="flex: 1; padding: 20px; display: flex; justify-content: center;">
+    <n-layout-content style="flex: 1; padding: 20px; display: flex; justify-content: center; margin-top:90px">
         <main>
             <slot></slot>
         </main>

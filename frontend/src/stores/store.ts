@@ -6,6 +6,9 @@ export const useSharedStore = defineStore("shared", () => {
   const shortenLink = ref("");
   const showModal = ref(false);
 
+  const showModalFooterLinks = ref(false);
+  const modalFooterLinksKeyText = ref<"privacyPolicy" | "termsOfService" | "helpSupport" | string | undefined >(undefined);
+
   const setOriginalUrl = (url: string) => {
     originalUrl.value = url;
   };
@@ -18,6 +21,10 @@ export const useSharedStore = defineStore("shared", () => {
     showModal.value = !showModal.value;
   };
 
+  const toggleModalFooterLinks = () => {
+    showModalFooterLinks.value = !showModalFooterLinks.value;
+  }
+
   return {
     originalUrl,
     shortenLink,
@@ -25,5 +32,8 @@ export const useSharedStore = defineStore("shared", () => {
     setOriginalUrl,
     setShortenLink,
     toggleModal,
+    showModalFooterLinks,
+    toggleModalFooterLinks,
+    modalFooterLinksKeyText,
   };
 });
