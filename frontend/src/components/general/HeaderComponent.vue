@@ -5,8 +5,7 @@
       <a href="#"
         style="font: 300 25px asap,arial; color: #e12524; letter-spacing: -1px; word-wrap: break-word; text-decoration: none;">LinkExt</a>
       <n-flex>
-        <n-avatar v-if="!authStore.isAuth" @click="redirect" class="avatar" :size="32"
-          src="./../../../../src/icons/person-not-auth.png" />
+        <n-avatar v-if="!authStore.isAuth" @click="redirect" class="avatar" :size="32" :src="avatarImage" />
         <n-dropdown v-if="authStore.isAuth && authStore.user" placement="bottom" trigger="click"
           :options="dropdownOptions" @select="handleDropdownSelect">
           <div class="avatar-container">
@@ -33,6 +32,10 @@ export default defineComponent({
     NDropdown
   },
   setup() {
+    const avatarImage = new URL('../../icons/person-not-auth.png', import.meta.url).href
+
+    console.log(avatarImage)
+
     const authStore = useAuthStore();
     const historyStore = useHistoryStore()
     const notification = useNotification();
@@ -82,6 +85,7 @@ export default defineComponent({
       authStore,
       handleDropdownSelect,
       dropdownOptions,
+      avatarImage
     }
   }
 })
