@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Build the Vue.js app for production
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
 
 # Step 2: Serve the application with Nginx
 FROM nginx:alpine

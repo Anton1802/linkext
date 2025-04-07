@@ -14,7 +14,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build the production version of the app (this will create the dist folder)
-RUN yarn build
+RUN NODE_OPTIONS="--max-old-space-size=8192" yarn build
 
 # Use a lightweight base image for the final stage
 FROM node:23-alpine 
