@@ -38,11 +38,15 @@ jobs:
           VITE_APP_API_URL: ${{ vars.VITE_APP_API_URL }}
           LINK_HOST: ${{ vars.LINK_HOST }}
           LINK_PORT: ${{ vars.LINK_PORT }}
+          GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ vars.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALLBACK_URL: ${{ vars.GOOGLE_CALLBACK_URL }}
+          JWT_SECRET: ${{ vars.JWT_SECRET }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL,LINK_HOST,LINK_PORT
+          envs: HOST,SERVER_USER,PORT,MONGODB_URI,NODE_ENV,ALLOWED_ORIGINS,VITE_APP_API_URL,LINK_HOST,LINK_PORT,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,JWT_SECRET
           script: |
             cd /root/linkext
             echo "MONGODB_URI=${{ vars.MONGODB_URI }}" > .env
@@ -51,6 +55,10 @@ jobs:
             echo "VITE_APP_API_URL=${{ vars.VITE_APP_API_URL }}" >> .env
             echo "LINK_HOST=${{ vars.LINK_HOST }}" >> .env
             echo "LINK_PORT=${{ vars.LINK_PORT }}" >> .env
+            echo "GOOGLE_CLIENT_ID=${{ vars.GOOGLE_CLIENT_ID }}" >> .env
+            echo "GOOGLE_CLIENT_SECRET=${{ vars.GOOGLE_CLIENT_SECRET }}" >> .env
+            echo "GOOGLE_CALLBACK_URL=${{ vars.GOOGLE_CALLBACK_URL }}" >> .env
+            echo "JWT_SECRET=${{ vars.JWT_SECRET }}" >> .env
 
       - name: Add ssl sert and ssl key
         uses: appleboy/ssh-action@v0.1.10
