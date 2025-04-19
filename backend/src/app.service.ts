@@ -9,7 +9,7 @@ import { Link } from './schemas/link.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { nanoid } from 'nanoid';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { User } from './schemas/user.schema';
@@ -45,7 +45,6 @@ export class AppService {
 
       const cachedShort = await this.cacheManager.get<string>(url);
       if (cachedShort) {
-        await this.addLinkToUserHistory(cachedShort, email);
         return { origin: url, shorten: cachedShort };
       }
 
@@ -67,6 +66,7 @@ export class AppService {
 
       return newLink;
     } catch (error) {
+      console.log(error);
       throw new HttpException('Error: Create link, success with error', 500);
     }
   }
@@ -90,14 +90,10 @@ export class AppService {
     return user.history;
   }
 
-  @Cron('0 0 * * *')
+  @Cron(CronExpression.EVERY_WEEK)
   async deleteExpiredLinks() {
-    await this.linkModel.deleteMany({
-      createdAt: { $lt: new Date(Date.now() - 86400000) },
-    });
-    await this.userModel.deleteMany({
-      createdAt: { $lt: new Date(Date.now() - 86400000) },
-    });
+    await this.linkModel.deleteMany();
+    await this.userModel.deleteMany();
     this.logger.log('Deleted expired links');
   }
 }
